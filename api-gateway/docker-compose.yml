@@ -1,0 +1,26 @@
+version: "3.8"
+
+networks:
+  online-shop-app-network:
+    external: true
+    name: online-shop-app-network
+
+services:
+  api-gateway:
+    build:
+      context: .
+      args:
+        NPM_SCRIPT: dev
+    env_file:
+      - .env
+    volumes:
+      - ./moleculer.config.ts:/app/moleculer.config.ts
+      - ./src:/app/src
+      - ./node_modules:/app/node_modules
+    # # if you want to see metrics, exported by microservice, yor should uncomment 'ports' section and go to the
+    # # http://localhost:MS_CFG_PROMETHEUS_HOST_PORT
+    ports:
+      - 3000:3000
+      # - ${MS_CFG_PROMETHEUS_HOST_PORT}:${MS_CFG_PROMETHEUS_PORT}
+    networks:
+      - online-shop-app-network

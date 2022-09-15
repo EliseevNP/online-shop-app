@@ -1,0 +1,35 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: env
+  namespace: {{ .Release.Namespace }}
+data:
+  MS_CFG_NAMESPACE: {{ .Release.Namespace }}
+  MS_CFG_LOGGER: "true"
+  MS_CFG_LOG_LEVEL: "debug"
+  MS_CFG_TRANSPORTER: "kafka://kafka:9092"
+  MS_CFG_SERIALIZER: "JSON"
+  MS_CFG_REQUESTTIMEOUT: "5000"
+  MS_CFG_REQUEST_TIMEOUT: "5000"
+  MS_CFG_ENABLED: "false"
+  MS_CFG_RETRIES: "5"
+  MS_CFG_DELAY: "100"
+  MS_CFG_MAXDELAY: "1000"
+  MS_CFG_FACTOR: "2"
+  MS_CFG_MAXCALLLEVEL: "100"
+  MS_CFG_HEARTBEATINTERVAL: "5"
+  MS_CFG_HEARTBEATTIMEOUT: "15"
+  MS_CFG_SHUTDOWNTIMEOUT: "5000"
+  MS_CFG_CONCURRENCY: "10"
+  MS_CFG_MAXQUEUESIZE: "100"
+  MS_CFG_METRICS_LOG_LEVEL: "info"
+  MS_CFG_PROMETHEUS_ENABLED: "true"
+  MS_CFG_PROMETHEUS_COLLECT_INTERVAL: "5"
+  MS_CFG_PROMETHEUS_PORT: "3001"
+  MS_CFG_PROMETHEUS_PATH: "/metrics"
+  MS_CFG_PROMETHEUS_NODE_JS_METRICS: "moleculer.broker.namespace|moleculer.request.total|moleculer.request.error.total|moleculer.request.time|process.memory.rss|process.cpu.utilization|process.fs.read|process.fs.write"
+  MS_CFG_POSTGRES_DB: "postgres"
+  MS_CFG_POSTGRES_USER: "postgres"
+  MS_CFG_POSTGRES_PASSWORD: "postgres"
+  MS_CFG_POSTGRES_HOST: "postgres-postgresql"

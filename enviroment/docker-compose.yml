@@ -1,0 +1,78 @@
+version: "3.8"
+
+networks:
+  online-shop-app-network:
+    external: true
+    name: online-shop-app-network
+
+volumes:
+  prometheus-storage:
+    driver: local
+  grafana-storage:
+    driver: local
+
+services:
+  zookeeper:
+    image: ${DC_IMAGE_ZOOKEEPER}
+    ports:
+      - ${DC_ZOOKEEPER_PORT}
+    hostname: zookeeper
+    networks:
+      - online-shop-app-network
+  kafka:
+    image: ${DC_IMAGE_KAFKA}
+    command: [start-kafka.sh]
+    ports:
+      - ${DC_KAFKA_PORTS}
+    hostname: kafka
+    env_file:
+      - .env.kafka
+    volumes:
+      - ${DC_KAFKA_VOLUMES}
+    depends_on:
+      - zookeeper
+    networks:
+      - online-shop-app-network
+  kafka-ui: # go to the http://localhost:8090
+    image: provectuslabs/kafka-ui:v0.4.0
+    ports:
+      - ${DC_KAFKA_UI_PORTS}
+    restart: always
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:${DC_KAFKA_PORT}
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:${DC_ZOOKEEPER_PORT}
+    networks:
+      - online-shop-app-network
+  postgres:
+    image: ${DC_IMAGE_POSTGRES}
+    ports:
+      - ${DC_POSTGRES_HOST}:${DC_POSTGRES_HOST_PORT}:${DC_POSTGRES_PORT}
+    env_file:
+      - .env.postgres
+    networks:
+      - online-shop-app-network
+  # redis:
+  #   image: ${DC_IMAGE_REDIS}
+  #   hostname: redis
+  #   ports:
+  #     - ${DC_REDIS_PORT}:${DC_REDIS_PORT}
+  #   networks:
+  #     - online-shop-app-network
+  # prometheus:
+  #   image: prom/prometheus
+  #   ports:
+  #     - ${DC_PROMETHEUS_HOST_PORT}:${DC_PROMETHEUS_PORT}
+  #   volumes:
+  #     - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+  #     - prometheus-storage:/prometheus
+  #   networks:
+  #     - online-shop-app-network
+  # grafana:
+  #   image: grafana/grafana:8.5.0
+  #   volumes:
+  #     - grafana-storage:/var/lib/grafana
+  #   ports:
+  #     - ${DC_GRAFANA_HOST_PORT}:${DC_GRAFANA_PORT}
+  #   networks:
+  #     - online-shop-app-network

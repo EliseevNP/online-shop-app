@@ -1,0 +1,87 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "airbnb-typescript/base",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "sourceType": "module",
+    "ecmaVersion": 6
+  },
+  "plugins": ["@typescript-eslint", "prefer-arrow"],
+  "rules": {
+    "@typescript-eslint/semi": ["error"],
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "default",
+        "format": ["camelCase", "PascalCase"]
+      },
+      {
+        "selector": "property",
+        "format": ["camelCase","UPPER_CASE", "PascalCase", "snake_case"]
+      },
+      {
+        "selector": "variable",
+        "format": ["camelCase", "PascalCase","UPPER_CASE"],
+        "leadingUnderscore": "allow"
+      },
+      {
+        "selector": "parameter",
+        "format": ["camelCase"],
+        "leadingUnderscore": "allow"
+      },
+      {
+        "selector": "memberLike",
+        "modifiers": ["private"],
+        "format": ["camelCase"],
+        "leadingUnderscore": "require"
+      },
+      {
+        "selector": "enumMember",
+        "format": ["UPPER_CASE"],
+        "leadingUnderscore": "allow"
+      },
+      {
+        "selector": "typeLike",
+        "format": ["PascalCase"]
+      },
+      {
+        "selector": "method",
+        "format": ["camelCase","PascalCase"],
+        "leadingUnderscore": "allow"
+      }
+    ],
+    "no-console": "error",
+    "class-methods-use-this": "off",
+    "no-param-reassign": "off",
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    "no-underscore-dangle" : "off",
+    "no-unused-expressions": "off",
+    "import/prefer-default-export": "off",
+    "import/no-cycle": "off",
+    "import/no-extraneous-dependencies": "off",
+    "no-nested-ternary": "off",
+    "radix": ["error", "as-needed"],
+    "max-len": [ "warn", {
+      "code": 150
+    }],
+    "sort-keys": "off",
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "ForOfStatement"
+      }
+    ],
+    "prefer-arrow/prefer-arrow-functions": [
+      "error",
+      {
+        "disallowPrototype": true,
+        "singleReturnOnly": false,
+        "classPropertiesAllowed": false
+      }
+    ]
+  }
+}

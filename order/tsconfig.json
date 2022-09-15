@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "strict": false,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es2019",
+    "noImplicitAny": false,
+    "outDir": "./dist",
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "lib": [
+      "dom",
+      "es2019",
+      "es2020.promise",
+      "es2020.bigint",
+      "es2020.string"
+    ],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": false,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "noImplicitThis": true,
+    "types": [
+      "node"
+    ],
+    "baseUrl": "./"
+  },
+  "compileOnSave": false,
+  "exclude": [
+    "node_modules",
+    "__mocks__/**/*",
+    "**/__mocks__/*",
+    "./scripts",
+    "./data",
+    "./dist",
+    "**/*.ts.map"
+  ]
+}

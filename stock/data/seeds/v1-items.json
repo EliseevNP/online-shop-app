@@ -1,0 +1,44 @@
+[
+  {
+    "item_id": "62399bf6-fadb-453f-ab66-81a97c360668",
+    "stock_id": "de51f6e0-e38b-4fcc-b36b-9092c9a1b840",
+    "title": "Самокат",
+    "count": 100000,
+    "coast": "1000"
+  },
+  {
+    "item_id": "0dadf6d4-9164-47d2-b0c2-457a8ff57276",
+    "stock_id": "de51f6e0-e38b-4fcc-b36b-9092c9a1b840",
+    "title": "Велосипед",
+    "count": 100000,
+    "coast": "2000"
+  },
+  {
+    "item_id": "6996f5c2-47fd-4d4b-8e0b-7c597111d1e1",
+    "stock_id": "de51f6e0-e38b-4fcc-b36b-9092c9a1b840",
+    "title": "Сноуборд",
+    "count": 100000,
+    "coast": "3000"
+  },
+  {
+    "item_id": "58646e9e-7d29-49df-aca4-9f0a5cf7c8e5",
+    "stock_id": "de51f6e0-e38b-4fcc-b36b-9092c9a1b840",
+    "title": "Скейтборд",
+    "count": 100000,
+    "coast": "4000"
+  },
+  {
+    "item_id": "7c660d4d-d8ca-4bef-a680-490a90d35afe",
+    "stock_id": "de51f6e0-e38b-4fcc-b36b-9092c9a1b840",
+    "title": "Коньки",
+    "count": 100000,
+    "coast": "5000"
+  },
+  {
+    "item_id": "7a2f04ae-d490-49e7-9946-debc316c07b1",
+    "stock_id": "de51f6e0-e38b-4fcc-b36b-9092c9a1b840",
+    "title": "Роликовые коньки",
+    "count": 0,
+    "coast": "6000"
+  }
+]

@@ -1,0 +1,11 @@
+docker-compose.env
+docker-compose.yml
+Dockerfile
+node_modules
+test
+.vscode
+tslint.json
+.env
+dist
+build
+helm
