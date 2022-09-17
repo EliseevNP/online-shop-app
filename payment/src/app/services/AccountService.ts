@@ -62,6 +62,8 @@ class AccountService extends ActionService {
     itemsInfo: any,
     deliveryInfo: any,
   }>) {
+    ctx.broker.logger.info('Handling СourierAssignedOnOrderCreateRequested event');
+
     const {
       orderId,
       userId,
@@ -170,6 +172,8 @@ class AccountService extends ActionService {
         return;
       }
     }, RETRY_OPTIONS);
+
+    ctx.broker.logger.info('СourierAssignedOnOrderCreateRequested event handled');
   }
 }
 

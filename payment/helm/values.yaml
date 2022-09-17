@@ -16,7 +16,7 @@ fullnameOverride: ""
 
 metrics:
   serviceMonitor:
-    enabled: false
+    enabled: true
 
 podSecurityContext: {}
   # fsGroup: 2000

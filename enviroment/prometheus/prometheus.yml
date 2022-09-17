@@ -5,9 +5,24 @@ scrape_configs:
   - job_name: "prometheus"
     static_configs:
       - targets: ["prometheus:9090"]
+  - job_name: "api-gateway"
+    static_configs:
+      - targets: ["api-gateway:3001"]
+  - job_name: "delivery"
+    static_configs:
+      - targets: ["delivery:3001"]
+  - job_name: "notification"
+    static_configs:
+      - targets: ["notification:3001"]
+  - job_name: "order"
+    static_configs:
+      - targets: ["order:3001"]
+  - job_name: "payment"
+    static_configs:
+      - targets: ["payment:3001"]
+  - job_name: "stock"
+    static_configs:
+      - targets: ["stock:3001"]
   - job_name: "users-auth"
     static_configs:
       - targets: ["users-auth:3001"]
-  # - job_name: "api-gateway"
-  #   static_configs:
-  #     - targets: ["api-gateway:3001"]

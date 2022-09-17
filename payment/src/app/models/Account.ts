@@ -21,7 +21,7 @@ export default class Account extends Model {
   public accountId!: string;
 
   @PrimaryKey
-  @Column(DataType.STRING)
+  @Column(DataType.INTEGER)
   public revision!: number;
 
   @AllowNull(false)

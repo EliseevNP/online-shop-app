@@ -9,8 +9,8 @@ module.exports = {
   port: DB_CONFIG.port,
   seederStorage: 'sequelize',
   migrationStorage: 'sequelize',
-  seederStorageTableName: 'OnlineShopApp_Payment_Seeds',
-  migrationStorageTableName: 'OnlineShopApp_Payment_Migrations',
+  seederStorageTableName: 'OnlineShopApp_Notification_Seeds',
+  migrationStorageTableName: 'OnlineShopApp_Notification_Migrations',
   logging: false,
   define: {
     freezeTableName: true,

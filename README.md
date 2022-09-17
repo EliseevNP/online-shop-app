@@ -63,6 +63,7 @@ $ helm upgrade --install order ./order/helm  --namespace online-shop-app
 $ helm upgrade --install payment ./payment/helm  --namespace online-shop-app
 $ helm upgrade --install stock ./stock/helm  --namespace online-shop-app
 $ helm upgrade --install delivery ./delivery/helm  --namespace online-shop-app
+$ helm upgrade --install notification ./notification/helm  --namespace online-shop-app
 ```
 
 ### 1.4 Postman tests
