@@ -26,11 +26,15 @@ export class ActionService {
         if (prefix && prefix.trim() !== '') {
           actionName = `${prefix}.${actionName}`;
           if (options.rest) {
-            const urlParts = options.rest.split(' ');
-            if (urlParts.length === 2) {
-              urlParts[1] = `${prefix}/${urlParts[1]}`;
+            if (typeof options.rest === 'string') {
+              const urlParts = options.rest.split(' ');
+              if (urlParts.length === 2) {
+                urlParts[1] = `${prefix}/${urlParts[1]}`;
+              }
+              options.rest = urlParts.join(' ');
+            } else {
+              throw new Error('rest option should be string, other type not supported yet');
             }
-            options.rest = urlParts.join(' ');
           }
         }
 

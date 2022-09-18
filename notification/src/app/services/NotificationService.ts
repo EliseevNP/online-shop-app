@@ -1,24 +1,21 @@
 // import { Context, Errors } from 'moleculer';
 import _ from 'lodash';
 import { Context } from 'moleculer';
-import { Options } from 'async-retry';
 import { ZonedDateTime, DateTimeFormatter } from '@js-joda/core';
 import {
   ActionLink, ActionService, ServiceLink,
 } from '../../common';
 import Notification from '../models/Notification';
-
-const RETRY_OPTIONS: Options = {
-  minTimeout: 100,
-  maxTimeout: 10000,
-  retries: 3,
-  onRetry: console.log,
-};
+import { SequelizePlainer } from '../../common/helpers/SequelizePlainer';
 
 @ServiceLink({ prefix: 'Notification' })
 class NotificationService extends ActionService {
   @ActionLink()
-  public async nothing(_ctx: Context): Promise<any> {}
+  public async GetNotificationsList(ctx: Context<{}, { user: { userId: string } }>): Promise<Notification[]> {
+    const { user: { userId } } = ctx.meta;
+
+    return SequelizePlainer(await Notification.findAll({ where: { userId }, order: [['createdAt', 'DESC']] }));
+  }
 
   /* ----------------------------- Event handlers ----------------------------- */
   async OrderCreatedEventHandler(ctx: Context<{
@@ -43,7 +40,7 @@ class NotificationService extends ActionService {
     const { deliveryInfo: { period: { from, to } } } = ctx.params;
 
     await Promise.all([
-      ctx.broker.call('v1.services.mailer.send', { 
+      ctx.call('v1.services.mailer.send', { 
         to: 'eliseev.np@yandex.ru',
         template: 'OrderCreated',
         locale: 'ru-RU',
@@ -54,6 +51,7 @@ class NotificationService extends ActionService {
       }),
       Notification.create({
         eventName: 'OrderCreated',
+        userId: ctx.params.userId,
         eventData: ctx.params,
       }),
     ]);
@@ -63,6 +61,7 @@ class NotificationService extends ActionService {
 
   async CreateOrderFailedEventHandler(ctx: Context<{
     orderId: string,
+    userId: string,
     errors: Array<{
       code: string,
       message: string,
@@ -98,7 +97,7 @@ class NotificationService extends ActionService {
     }
 
     await Promise.all([
-      ctx.broker.call('v1.services.mailer.send', { 
+      ctx.call('v1.services.mailer.send', { 
         to: 'eliseev.np@yandex.ru',
         template: 'CreateOrderFailed',
         locale: 'ru-RU',
@@ -108,6 +107,7 @@ class NotificationService extends ActionService {
       }),
       Notification.create({
         eventName: 'CreateOrderFailed',
+        userId: ctx.params.userId,
         eventData: ctx.params,
       }),
     ]);

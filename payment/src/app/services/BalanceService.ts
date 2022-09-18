@@ -61,7 +61,7 @@ class BalanceService extends ActionService {
       throw error;
     }
 
-    await ctx.broker.emit('BalanceHasBeenWithdrawaled', newAccountData);
+    await ctx.emit('BalanceHasBeenWithdrawaled', newAccountData);
 
     return newAccount;
   }
@@ -124,7 +124,7 @@ class BalanceService extends ActionService {
       throw error;
     }
 
-    await ctx.broker.emit('BalanceHasBeenWithdrawaled', newAccountData);
+    await ctx.emit('BalanceHasBeenWithdrawaled', newAccountData);
 
     return newAccount;
   }

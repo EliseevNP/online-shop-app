@@ -3,6 +3,8 @@ import { Service as MoleculerService } from 'moleculer';
 import MailerService from 'moleculer-mail';
 import path from 'path';
 
+console.log(path.join(__dirname, '..', 'app', 'templates'));
+
 @Service({
   name: 'services.mailer',
   version: 1,
@@ -18,7 +20,7 @@ import path from 'path';
 				pass: 'jmdhiqerormgwhls'
 			}
 		},
-		templateFolder: path.join(__dirname, '../app/templates')
+		templateFolder: path.join(__dirname, '..', 'app', 'email-templates')
   },
   mixins: [MailerService],
 })

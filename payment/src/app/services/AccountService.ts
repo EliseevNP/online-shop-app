@@ -50,7 +50,7 @@ class AccountService extends ActionService {
       userId,
       amount
     });
-    await ctx.broker.emit('PaymentAccountCreated', { accountId, userId, revision, amount });
+    await ctx.emit('PaymentAccountCreated', { accountId, userId, revision, amount });
 
     ctx.broker.logger.info('SignupRequested event handled');
   }
@@ -85,7 +85,7 @@ class AccountService extends ActionService {
           }
 
           await retry(async () => {
-            await ctx.broker.emit('PaymentProcessFailedOnOrderCreateRequested', {
+            await ctx.emit('PaymentProcessFailedOnOrderCreateRequested', {
               itemsInfo,
               orderId,
               deliveryInfo,
@@ -119,7 +119,7 @@ class AccountService extends ActionService {
           }
 
           await retry(async () => {
-            await ctx.broker.emit('PaymentProcessFailedOnOrderCreateRequested', {
+            await ctx.emit('PaymentProcessFailedOnOrderCreateRequested', {
               itemsInfo,
               orderId,
               deliveryInfo,
@@ -159,7 +159,7 @@ class AccountService extends ActionService {
 
       try {
         await retry(async () => {
-          await ctx.broker.emit('PaymentProcessedOnOrderCreateRequested', {
+          await ctx.emit('PaymentProcessedOnOrderCreateRequested', {
             orderId,
             deliveryInfo,
           })          

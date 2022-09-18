@@ -17,4 +17,9 @@ module.exports = {
   },
   sync: false,
   minifyAliases: true,
+  pool: {
+    min: parseInt(process.env.MS_CFG_POSTGRES_POOL_MIN || '0') || 0,
+    max: parseInt(process.env.MS_CFG_POSTGRES_POOL_MAX || '5') || 5,
+    evict: parseInt(process.env.MS_CFG_POSTGRES_POOL_EVICT || '1000') || 1000,
+  }
 };

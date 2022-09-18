@@ -10,6 +10,7 @@ import {
 import { EOrderStates } from '../enums/EOrderStates';
 import Order from '../models/Order';
 import { Error } from '../../common/types/Error';
+import { SequelizePlainer } from '../../common/helpers/SequelizePlainer';
 
 const RETRY_OPTIONS: Options = {
   minTimeout: 100,
@@ -112,19 +113,21 @@ class OrderService extends ActionService {
       deliveryInfo,
     } = ctx.params;
     const { userId } = ctx.meta.user;
-
+    
+    const existingOrderSpan = ctx.startSpan('Find existing order in DB', { tags: { orderId } });
     const existingOrder = await Order.unscoped().findOne({ where: { orderId } });
-
     if (existingOrder?.orderId === orderId && existingOrder?.userId === userId) {
       // duplicated request, so just return existing user
       return existingOrder;
     } else if (existingOrder?.orderId === orderId) {
       throw new Errors.MoleculerClientError(`duplicated orderId#${orderId}`, 400, 'DUPLICATED_ORDER_ID')
     }
+    ctx.finishSpan(existingOrderSpan);
 
     const state = EOrderStates.PENDING;
     const revision = 0;
 
+    const createOrderSpan = ctx.startSpan('Create new order and save to DB', { tags: { orderId } });
     const order = await Order.create({
       orderId,
       state,
@@ -133,15 +136,18 @@ class OrderService extends ActionService {
       itemsInfo,
       deliveryInfo,
     });
+    ctx.finishSpan(createOrderSpan);
 
-    await ctx.broker.emit('OrderCreateRequested', {
+    const emitCreateOrderRequestedSpan = ctx.startSpan('Emit OrderCreateRequested event', { tags: { orderId } });
+    await ctx.emit('OrderCreateRequested', SequelizePlainer({
       orderId,
       userId,
       itemsInfo,
       deliveryInfo,
-    });
+    }, true));
+    ctx.finishSpan(emitCreateOrderRequestedSpan);
 
-    return order;
+    return SequelizePlainer(order, true)!;
   }
 
   /* ----------------------------- Event handlers ----------------------------- */
@@ -182,7 +188,7 @@ class OrderService extends ActionService {
 
       try {
         await retry(async () => {
-          await ctx.broker.emit('OrderCreated', newOrderData)          
+          await ctx.emit('OrderCreated', newOrderData)          
         }, RETRY_OPTIONS);
       } catch (err) {
         console.log('err', err);
@@ -220,9 +226,12 @@ async function createOrderFailedHandler(ctx: Context<{ orderId: string, errors: 
 
   ctx.service?.broker.logger.info(`[ORDER] errors: ${JSON.stringify(errors, null, 2)}`);
 
-  await Order.unscoped().destroy({ where: { orderId } });
-  await ctx.broker.emit('CreateOrderFailed', {
+  const order = await Order.unscoped().findOne({ where: { orderId } });
+
+  await order?.destroy();
+  await ctx.emit('CreateOrderFailed', {
     orderId,
+    userId: order?.userId,
     errors,
   })
 }

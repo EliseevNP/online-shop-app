@@ -92,7 +92,7 @@ class AuthService extends ActionService {
       patronymic,
     });
 
-    await ctx.broker.emit('SignupRequested', { userId });
+    await ctx.emit('SignupRequested', { userId });
 
     return _.omit(user.get({ plain: true }), 'passwordHash');
   }
@@ -241,7 +241,7 @@ class AuthService extends ActionService {
       throw error;
     }
 
-    await ctx.broker.emit('UserRegistered', _.omit(newUserData, 'passwordHash'));
+    await ctx.emit('UserRegistered', _.omit(newUserData, 'passwordHash'));
 
     ctx.broker.logger.info('PaymentAccountCreated event handled');
   }

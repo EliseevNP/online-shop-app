@@ -15,7 +15,9 @@ $ kubectl config set-context --current --namespace=online-shop-app
 ```shell
 $ helm repo add bitnami https://charts.bitnami.com/bitnami
 $ helm repo add kafka-ui https://provectus.github.io/kafka-ui
+$ helm repo add nats https://nats-io.github.io/k8s/helm/charts/
 $ helm repo add prometheus-community https://prometheus-community.github.io/helm-charts # (optional)
+$ helm repo add jaeger-all-in-one https://raw.githubusercontent.com/hansehe/jaeger-all-in-one/master/helm/charts # (optional)
 $ helm repo update
 ```
 
@@ -24,12 +26,25 @@ $ helm repo update
 $ helm upgrade --install postgres bitnami/postgresql -f ./enviroment/helm/postgres/values.yaml --namespace online-shop-app
 ```
 
-#### 1.2.3 Setup kafka
+#### 1.2.3 Setup transport
+
+The moleculer framework can work with various [transporters](https://moleculer.services/docs/0.14/networking.html).
+
+The transport for this application is set by [MS_CFG_TRANSPORTER](./enviroment/helm/config/templates/configmap.yaml) environment variable.
+
+You need to deploy one of the following message brokers and select the appropriate value for [MS_CFG_TRANSPORTER](./enviroment/helm/config/templates/configmap.yaml) environment variable.
+
+##### 1.2.3.1 Setup kafka transporter (optional if use nats transporter)
 ```shell
 $ helm upgrade --install kafka bitnami/kafka -f ./enviroment/helm/kafka/values.yaml --namespace online-shop-app
 
 # optional
 $ helm upgrade --install kafka-ui kafka-ui/kafka-ui -f ./enviroment/helm/kafka-ui/values.yaml --namespace online-shop-app # http://kafka-ui.arch.homework/
+```
+
+##### 1.2.3.2 Setup nats transporter (optional if use kafka transporter)
+```shell
+$ helm upgrade --install nats nats/nats --namespace online-shop-app
 ```
 
 #### 1.2.4 Setup config
@@ -44,12 +59,18 @@ $ helm upgrade --install ingress-nginx ingress-nginx --repo https://kubernetes.g
 
 #### 1.2.6 Setup propetheus-stack (optional)
 ```shell
-helm upgrade --install prometheus-stack prometheus-community/kube-prometheus-stack -f ./enviroment/helm/prometheus-stack/values.yaml --namespace online-shop-app
+$ helm upgrade --install prometheus-stack prometheus-community/kube-prometheus-stack -f ./enviroment/helm/prometheus-stack/values.yaml --namespace online-shop-app
 
 # access to propetheus-stack via following links:
 # - http://prometheus.arch.homework
 # - http://alertmanager.arch.homework/
 # - http://grafana.arch.homework
+```
+
+### 1.2.7 Setup jaeger (optional)
+
+```shell
+$ helm upgrade --install jaeger jaeger-all-in-one/jaeger-all-in-one -f ./enviroment/helm/jaeger/values.yaml --namespace online-shop-app
 ```
 
 ### 1.3 Setup application
@@ -66,13 +87,17 @@ $ helm upgrade --install delivery ./delivery/helm  --namespace online-shop-app
 $ helm upgrade --install notification ./notification/helm  --namespace online-shop-app
 ```
 
-### 1.4 Postman tests
+### 1.4 Application structure
+
+Application structure scheme available in [Miro](https://miro.com/app/board/uXjVPddybT8=/).
+
+### 1.5 Postman tests
 
 ```
 newman run --verbose https://www.getpostman.com/collections/0362d4956854e4fa67f1 --delay-request 1000
 ```
 
-### 1.5 Troubleshooting
+### 1.6 Troubleshooting
 
 If you have following error when installing api-gateway:
 

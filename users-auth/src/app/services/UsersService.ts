@@ -79,7 +79,7 @@ class UsersService extends ActionService {
     }
 
     await user.update({ ..._.pick(ctx.params, ['name', 'surname', 'patronymic']), revision: user.revision + 1 });
-    await ctx.broker.emit('UserUpdated', {
+    await ctx.emit('UserUpdated', {
       userId: user.userId,
       state: user.state,
       revision: user.revision,

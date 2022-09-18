@@ -80,7 +80,7 @@ class StockService extends ActionService {
       });
 
       if (errors.length) {
-        await ctx.broker.emit('ItemReservationFailedOnOrderCreateRequested', {
+        await ctx.emit('ItemReservationFailedOnOrderCreateRequested', {
           orderId,
           errors,
         });
@@ -106,7 +106,7 @@ class StockService extends ActionService {
 
         try {
           await retry(async () => {
-            await ctx.broker.emit('ItemReservedOnOrderCreateRequested', {
+            await ctx.emit('ItemReservedOnOrderCreateRequested', {
               itemsInfo,
               orderId,
               userId,
@@ -203,7 +203,7 @@ async function createOrderFailedHandler(ctx: Context<{
 
     try {
       await retry(async () => {
-        await ctx.broker.emit('ItemReleasedOnOrderCreateRequested', {
+        await ctx.emit('ItemReleasedOnOrderCreateRequested', {
           orderId,
           errors,
         })          

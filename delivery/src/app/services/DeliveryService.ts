@@ -40,7 +40,7 @@ class DeliveryService extends ActionService {
     };
     const courier = await Courier.create(newCourierData);
 
-    await ctx.broker.emit('CourierCreated', newCourierData);
+    await ctx.emit('CourierCreated', newCourierData);
 
     return courier;
   }
@@ -59,7 +59,7 @@ class DeliveryService extends ActionService {
     const { id: courierId } = ctx.params;
 
     await Courier.destroy({ where: { courierId } });
-    await ctx.broker.emit('CourierDeleted', { courierId });
+    await ctx.emit('CourierDeleted', { courierId });
 
     return;
   }
@@ -108,7 +108,7 @@ class DeliveryService extends ActionService {
           };
 
           await retry(async () => {
-            await ctx.broker.emit('СourierAssignFailedOnOrderCreateRequested', {
+            await ctx.emit('СourierAssignFailedOnOrderCreateRequested', {
               orderId,
               itemsInfo,
               errors: [error],
@@ -154,7 +154,7 @@ class DeliveryService extends ActionService {
 
       try {
         await retry(async () => {
-          await ctx.broker.emit('СourierAssignedOnOrderCreateRequested', {
+          await ctx.emit('СourierAssignedOnOrderCreateRequested', {
             itemsInfo,
             orderId,
             userId,
@@ -209,7 +209,7 @@ class DeliveryService extends ActionService {
 
       try {
         await retry(async () => {
-          await ctx.broker.emit('СourierReleasedOnOrderCreateRequested', {
+          await ctx.emit('СourierReleasedOnOrderCreateRequested', {
             orderId,
             itemsInfo,
             errors,

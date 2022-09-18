@@ -1,4 +1,4 @@
-import { QueryInterface, DataTypes } from 'sequelize';
+import { QueryInterface, DataTypes, fn } from 'sequelize';
 import { Sequelize } from 'sequelize-typescript';
 
 export = {
@@ -14,6 +14,10 @@ export = {
           type: DataTypes.UUID,
           defaultValue: Sequelize.literal('uuid_generate_v4()::uuid'),
         },
+        userId: {
+          type: DataTypes.UUID,
+          allowNull: true,
+        },
         event_name: {
           type: DataTypes.STRING,
           allowNull: false,
@@ -21,6 +25,16 @@ export = {
         event_data: {
           type: DataTypes.JSONB,
           allowNull: false,
+        },
+        created_at: {
+          allowNull: false,
+          defaultValue: fn('NOW'),
+          type: DataTypes.DATE,
+        },
+        updated_at: {
+          allowNull: false,
+          defaultValue: fn('NOW'),
+          type: DataTypes.DATE,
         },
       }, {
         // IDK why comment option exists in docs, but do not declared in class

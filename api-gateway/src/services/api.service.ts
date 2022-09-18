@@ -1,5 +1,5 @@
 import { ServiceSchema } from 'moleculer';
-import ApiGateway, { Errors } from 'moleculer-web';
+import ApiGateway from 'moleculer-web';
 
 const ApiService: ServiceSchema = {
   name: 'api-gateway',
@@ -63,6 +63,14 @@ const ApiService: ServiceSchema = {
           'DELETE /:id': 'v1.services.delivery.Delivery.DeleteCourier',
         },
       },
+      {
+        path: '/notifications',
+        authorization: true,
+        bodyParsers: { json: { limit: '50MB' } },
+        aliases: {
+          'GET /': 'v1.services.notification.Notification.GetNotificationsList',
+        },
+      },
     ],
   },
   methods: {
@@ -78,20 +86,20 @@ const ApiService: ServiceSchema = {
 			}
 
 			if (!token) {
-				return Promise.reject(new Errors.UnAuthorizedError(Errors.ERR_NO_TOKEN, {}));
+				return Promise.reject(new ApiGateway.Errors.UnAuthorizedError(ApiGateway.Errors.ERR_NO_TOKEN, {}));
 			}
 
 			// Resolve JWT token
 			return ctx.call("v1.services.users-auth.Auth.resolveToken", { accessToken: token })
 				.then((user) => {
 					if (!user) {
-						return Promise.reject(new Errors.UnAuthorizedError(Errors.ERR_INVALID_TOKEN, {}));
+						return Promise.reject(new ApiGateway.Errors.UnAuthorizedError(ApiGateway.Errors.ERR_INVALID_TOKEN, {}));
           }
 
 					ctx.meta.user = user;
 				})
 				.catch(() => {
-					return Promise.reject(new Errors.UnAuthorizedError(Errors.ERR_INVALID_TOKEN, {}));
+					return Promise.reject(new ApiGateway.Errors.UnAuthorizedError(ApiGateway.Errors.ERR_INVALID_TOKEN, {}));
 				});
 		}
 	}

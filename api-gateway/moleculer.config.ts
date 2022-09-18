@@ -192,6 +192,7 @@ const brokerConfig: BrokerOptions = {
       type: process.env.MS_CFG_TRACING_TYPE || 'Jaeger',
       options: {
         endpoint: null,
+        safetyTags: process.env.MS_CFG_TRACING_SAFETY_TAGS_ENABLED === "true" || false,
         host: process.env.MS_CFG_TRACING_JAEGER_HOST || '127.0.0.1',
         port: process.env.MS_CFG_TRACING_JAEGER_PORT || 6832,
         sampler: {
@@ -203,9 +204,6 @@ const brokerConfig: BrokerOptions = {
       },
     },
   },
-
-  // Register custom REPL commands.
-  replCommands: null,
 };
 
 export = brokerConfig;

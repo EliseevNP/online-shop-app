@@ -67,6 +67,7 @@ const brokerConfig: Partial<BrokerOptions> = {
       type: process.env.MS_CFG_TRACING_TYPE || 'Jaeger',
       options: {
         endpoint: null,
+        safetyTags: process.env.MS_CFG_TRACING_SAFETY_TAGS_ENABLED === "true" || false,
         host: process.env.MS_CFG_TRACING_JAEGER_HOST || '127.0.0.1',
         port: process.env.MS_CFG_TRACING_JAEGER_PORT || 6832,
         sampler: {
@@ -83,7 +84,7 @@ const brokerConfig: Partial<BrokerOptions> = {
     preferLocal: true,
   },
   circuitBreaker: {
-    enabled: true,
+    enabled: process.env.MS_CFG_CIRCUIT_BREAKER_ENABLED === 'true' || false,
   },
   validator: {
     type: 'Fastest',
