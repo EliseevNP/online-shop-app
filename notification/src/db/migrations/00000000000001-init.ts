@@ -14,7 +14,7 @@ export = {
           type: DataTypes.UUID,
           defaultValue: Sequelize.literal('uuid_generate_v4()::uuid'),
         },
-        userId: {
+        user_id: {
           type: DataTypes.UUID,
           allowNull: true,
         },
